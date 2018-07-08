@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ChooChooJS - A train scheduler app</title>
+
+    <!--Bootstrap 4 includes-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+</head>
+<body>
+    <nav class="navbar custo-nav justify-content-center">
+        <a class="navbar-brand">
+            ChooChoo JS <i class="fas fa-train fa-2x"></i>
+        </a>
+    </nav>
+    <div class="container component">
+        <div class="row">
+            <div class="col-12 text-center">
+                <table class="table">
+                    <thead class="thead-dark justify-content-center">
+                    <tr>
+                        <h3>Train Schedule</h3>
+                    </tr>
+                    <tr>
+                        <th scope="col">Train Name</th>
+                        <th scope="col">Destination</th>
+                        <th scope="col">Frequency(min)</th>
+                        <th scope="col">Next Arrival</th>
+                        <th scope="col">Minutes Away</th>
+                        <th scope="col">Edit?</th>
+                    </tr>
+                    </thead>
+                    <tbody class="trains">
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@fat</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>@twitter</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="container component">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h3>Add a Train</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <form>
+                    <!--Train Name-->
+                    <div class="form-group">
+                        <label for="trainName">Train Name</label>
+                        <input type="text" class="form-control" id="trainName" aria-describedby="trainNameHelp" placeholder="Enter the name of the train">
+
+                        <small id="trainNameHelp" class="form-text text-muted">Ex: Hogwarts Express</small>
+                    </div>
+                    <!--Destination-->
+                    <div class="form-group">
+                        <label for="trainDestination">Destination</label>
+                        <input type="text" class="form-control" id="trainDestination" placeholder="Ex - Los Angeles">
+                    </div>
+                    <!--First Time-->
+                    <div class="form-group">
+                        <label for="datetimepicker">Starting Time</label>
+                        <div class="input-group date" id="datetimepicker" data-target-input="nearest">
+                            <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker3"/>
+                            <div class="input-group-append" data-target="#datetimepicker" data-toggle="datetimepicker" aria-describedby="startTimeHelp" placeholder="Enter the time in 24hr format">
+                                <div class="input-group-text"><i class="far fa-clock"></i></div>
+                            </div>
+                        </div>
+                        <small id="startTimeHelp" class="form-text text-muted">Ex: 11:30PM should be entered as 23:30</small>
+                    </div>
+
+                    <!--Frequency-->
+                    <div class="form-group">
+                        <label for="trainFrequency">Password</label>
+                        <input type="number" class="form-control" id="trainFrequency" placeholder="Frequency in Minutes">
+                        <small id="trainFrequency" class="form-text text-muted">Ex: 30 (minutes)</small>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <!--Bootstrap 4 JS Items and Jquery-->
+        <script
+                src="https://code.jquery.com/jquery-3.3.1.js"
+                integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+                crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+        <script src="assets/js/app.js"></script>
+        <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker').datetimepicker({
+                    format: 'HH:mm'
+                });
+            });
+        </script>
+
+    </footer>
+
+</body>
+</html>
