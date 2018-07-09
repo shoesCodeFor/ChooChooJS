@@ -135,6 +135,50 @@
             firebase.initializeApp(config);
             // Init the DB
             var database = firebase.database();
+            var dbState;
+            var oldKeys = [];
+
+            // Get data from DB
+            database.ref().on("value", function(snapshot) {
+                // Set the state to a var
+                dbState = snapshot.val();
+                console.log(dbState);
+
+                // Lets get some keys
+                let keys = Object.keys(dbState);
+                let oldKeys = Object.keys(dbState);
+
+                console.log(keys);
+                if(!newData(keys, oldKeys)){
+                    console.log('We got new data');
+                    for(let i = 0; i < keys.length; i++){
+                        console.log(dbState[keys[i]]);
+                    }
+                }
+
+                // Change the HTML using jQuery to reflect the updated clickCounter value
+                // $("#click-value").text(snapshot.val().clickCount);
+                // Alternate solution to the above line
+                // $("#click-value").html(clickCounter);
+
+                // If any errors are experienced, log them to console.
+            }, function(errorObject) {
+                console.log("The read failed: " + errorObject.code);
+            });
+
+            function newData(arr1, arr2){
+                let theBiggerOne = arr1.length;
+                if(arr2.length > theBiggerOne){
+                    theBiggerOne = arr2.length;
+                }
+                for(let i = 0; i < theBiggerOne; i++){
+                    if(arr1[i] !== arr2[i]){
+                        return false;
+                    }
+                }
+                return true;
+            }
+
             function postToDB(){
                 // Code for handling the push
                 database.ref().push({
