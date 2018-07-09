@@ -1,5 +1,5 @@
 // App logic for ChooChooJS - jQuery and Vanilla JS
-const moment = require('moment');
+// const moment = require('moment');
 
 const now = moment().subtract(1, "years");
 
@@ -45,8 +45,12 @@ function waitTime(currentTime, nextStop){
     return waitTime;
 }
 
-function Train(tName, sTime, intMin){
+function Train(_id, tName, dest, sTime, intMin){
+    this.id = _id;
+
     this.name =  tName;
+
+    this.destination = dest;
 
     this.startTime =  sTime;
 
@@ -56,17 +60,17 @@ function Train(tName, sTime, intMin){
 
     this.nextStop = getNextStop(now, this.stops);
 
-    this.waitMins = waitTime(now, this.nextStop);
+    this.waitMins = waitTime(now, this.nextStop, this.id);
 
     this.shown = true;
 
-    console.log(this.name);
-    console.log(this.startTime);
-    console.log(this.tInterval);
-    console.log(this.stops);
-    console.log(this.name + ' next stop');
-    console.log(this.nextStop);
-    console.log(this.waitMins);
+    // console.log(this.name);
+    // console.log(this.startTime);
+    // console.log(this.tInterval);
+    // console.log(this.stops);
+    // console.log(this.name + ' next stop');
+    // console.log(this.nextStop);
+    // console.log(this.waitMins);
 
 }
 
@@ -76,5 +80,5 @@ function Train(tName, sTime, intMin){
 // let nextTrain = getNextStop(now, trainStops);
 // waitTime(now, nextTrain);
 
-var hogwarts = new Train('Hogwarts', '11:00', 35);
-console.log(hogwarts.name);
+// var hogwarts = new Train('Hogwarts', '11:00', 35);
+// console.log(hogwarts.name);

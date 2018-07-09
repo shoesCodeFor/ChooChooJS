@@ -33,25 +33,8 @@
                         <th scope="col">Edit?</th>
                     </tr>
                     </thead>
-                    <tbody class="trains">
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>@twitter</td>
-                    </tr>
+                    <tbody id="trains">
+
                     </tbody>
                 </table>
             </div>
@@ -65,7 +48,7 @@
         </div>
         <div class="row">
             <div class="col-12">
-                <form>
+                <form id="newTrain" onsubmit="return false;">
                     <!--Train Name-->
                     <div class="form-group">
                         <label for="trainName">Train Name</label>
@@ -82,7 +65,7 @@
                     <div class="form-group">
                         <label for="datetimepicker">Starting Time</label>
                         <div class="input-group date" id="datetimepicker" data-target-input="nearest">
-                            <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker3"/>
+                            <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker3" id="trainStart"/>
                             <div class="input-group-append" data-target="#datetimepicker" data-toggle="datetimepicker" aria-describedby="startTimeHelp" placeholder="Enter the time in 24hr format">
                                 <div class="input-group-text"><i class="far fa-clock"></i></div>
                             </div>
@@ -92,12 +75,12 @@
 
                     <!--Frequency-->
                     <div class="form-group">
-                        <label for="trainFrequency">Password</label>
+                        <label for="trainFrequency">Train Frequency</label>
                         <input type="number" class="form-control" id="trainFrequency" placeholder="Frequency in Minutes">
-                        <small id="trainFrequency" class="form-text text-muted">Ex: 30 (minutes)</small>
+                        <small id="trainFrequencyDesc" class="form-text text-muted">Ex: 30 (minutes)</small>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button onclick="formSubmit()" type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
 
@@ -112,7 +95,7 @@
                 crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+        <script type="text/javascript" src="assets/js/moment.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
         <script src="assets/js/app.js"></script>
         <script type="text/javascript">
@@ -146,16 +129,14 @@
 
                 // Lets get some keys
                 let keys = Object.keys(dbState);
-                let oldKeys = Object.keys(dbState);
+
 
                 console.log(keys);
                 if(!newData(keys, oldKeys)){
                     console.log('We got new data');
-                    for(let i = 0; i < keys.length; i++){
-                        console.log(dbState[keys[i]]);
-                    }
+                    fillTable(keys, dbState);
                 }
-
+                oldKeys = Object.keys(dbState);
                 // Change the HTML using jQuery to reflect the updated clickCounter value
                 // $("#click-value").text(snapshot.val().clickCount);
                 // Alternate solution to the above line
@@ -165,6 +146,65 @@
             }, function(errorObject) {
                 console.log("The read failed: " + errorObject.code);
             });
+            function updateData(){
+                // Get data from DB
+                database.ref().on("value", function(snapshot) {
+                    // Set the state to a var
+                    dbState = snapshot.val();
+                    console.log(dbState);
+
+                    // Lets get some keys
+                    let keys = Object.keys(dbState);
+
+
+                    console.log(keys);
+                    if(!newData(keys, oldKeys)){
+                        console.log('We got new data');
+                        fillTable(keys, dbState);
+                    }
+                    oldKeys = Object.keys(dbState);
+                    // Change the HTML using jQuery to reflect the updated clickCounter value
+                    // $("#click-value").text(snapshot.val().clickCount);
+                    // Alternate solution to the above line
+                    // $("#click-value").html(clickCounter);
+
+                    // If any errors are experienced, log them to console.
+                }, function(errorObject) {
+                    console.log("The read failed: " + errorObject.code);
+                });
+            }
+            // setInterval(function () {
+            //     updateData();
+            // }, 15000);
+
+            function fillTable(keyArr, state){
+                console.log('Filling the table...')
+                let table = $('#trains');
+                table.empty();
+                for(let i = 0; i < keyArr.length; i++){
+                    console.log(state[keyArr[i]]);
+                    let row = state[keyArr[i]];
+                    let aTrain = new Train(keyArr[i], row.name, row.dest, row.startTime, row.interval);
+                    let rowHTML = `
+                        <tr id="${keyArr[i]}">
+                        <th scope="row">${aTrain.name}</th>
+                        <td>${aTrain.destination}</td>
+                        <td>${aTrain.tInterval}</td>
+                        <td>${moment(aTrain.nextStop, "HH:mm").format("HH:mm A")}</td>
+                        <td>${aTrain.waitMins}</td>
+                        <td><i class="far fa-trash-alt" onclick="deleteTrain('${keyArr[i]}')"></i></td>
+                        </tr>
+                    `;
+                    table.append(rowHTML);
+                    // <th scope="col">Train Name</th>
+                    // <th scope="col">Destination</th>
+                    //     <th scope="col">Frequency(min)</th>
+                    //     <th scope="col">Next Arrival</th>
+                    // <th scope="col">Minutes Away</th>
+                    // <th scope="col">Edit?</th>
+                }
+            }
+
 
             function newData(arr1, arr2){
                 let theBiggerOne = arr1.length;
@@ -179,17 +219,34 @@
                 return true;
             }
 
-            function postToDB(){
+            function deleteTrain(id){
+                console.log(id);
+                $('#' + id).remove();
+                database.ref(id).remove();
+            }
+
+            function formSubmit(){
+                let name = $('#trainName').val();
+                let dest = $('#trainDestination').val();
+                let start = $('#trainStart').val();
+                let freq = $('#trainFrequency').val();
+                console.log(name + dest + start + freq);
+                postToDB(name, dest, start, freq);
+                document.getElementById("newTrain").reset();
+            }
+
+            function postToDB(_name, _dest, _start, _freq){
                 // Code for handling the push
                 database.ref().push({
-                    name: 'The Trains III',
-                    startTime: '12:08',
-                    interval: 47,
+                    name: _name,
+                    dest: _dest,
+                    startTime: _start,
+                    interval: _freq,
                     shown: true,
                     dateAdded: firebase.database.ServerValue.TIMESTAMP
                 });
             }
-
+            // postToDB();
 
         </script>
 
