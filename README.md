@@ -1,9 +1,11 @@
-# ChooChooJS
+# [ChooChooJS]()
 
-A simple train scheduling type page using Moment.js and Firebase.
+## A simple train scheduling web-app built on Firebase.  
+
+Sometimes apps don't need to be so complicated. 
 
 Future iterations will have should include some maps, don't you think?
 
 I will need to move the firebase stuff to a real API
 
-ß
+-Shoe
